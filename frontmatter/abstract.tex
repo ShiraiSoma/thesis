@@ -3,13 +3,18 @@
 \thispagestyle{empty}
 %
 \begin{center}
-  \scalebox{1.5}{タイトル}\\
+  \scalebox{1.5}{Video Object Segmentation を用いた}\\
+  \scalebox{1.5}{ゼロショットセグメンテーションのリアルタイム化}\\
+  \scalebox{1.25}{--- 自律移動ロボットによる実環境での検証 ---} \\
 \end{center}
 \vspace{1.0zh}
+
+画像と言語を対応付けた基盤モデルの発展により，テキストで指定した任意の対象を事前学習なしで認識するゼロショットセグメンテーションが可能になった．テキストを変更するだけで認識対象を切り替えられるため，多様な対象を扱う移動ロボットの認識手段として有用である．しかし，これらの基盤モデルは推論に大きな計算資源を要するため，移動ロボットに搭載可能な計算機上で毎フレーム実行することは難しい．そこで本研究では，ゼロショットセグメンテーションを低頻度で実行し，その間のフレームをVideo Object Segmentation 手法であるCutie によるマスク伝播で補間する手法を提案する．提案手法では，Grounding DINOとSegment Anything Model 2 を組み合わせたLanguage Segmentation-Anything を一定間隔で実行してマスクを得る．その間はCutieが対象をオブジェクト単位で保持しながらマスクを伝播し，再検出時には重なりに基づいて伝播中のマスクを矯正する．これにより，計算コストの大きい処理の実行頻度を抑えつつ，指定した対象のマスクを毎フレーム継続的に得ることを目指す．本研究では，提案手法における検出の間引きが認識精度と処理速度に与える影響をデータセットを用いて評価する．また，提案手法を自律移動ロボットに適用し，実環境での走行を通じてその有効性を検証する．
 %
 
 
-キーワード: 
+キーワード: ゼロショットセグメンテーション，自律移動ロボット
+
 %
 \newpage
 %%
@@ -17,10 +22,12 @@
 \thispagestyle{empty}
 %
 \begin{center}
-  \scalebox{1.3}{title}
+  \scalebox{1.3}{Real-Time Zero-Shot Segmentation Using Video Object Segmentation}\\
+  \scalebox{1.15}{--- Verification in a Real Environment with an Autonomous Mobile Robot ---}\\
 \end{center}
 \vspace{1.0zh}
+
+Advances in vision-language foundation models have enabled zero-shot segmentation, which recognizes arbitrary objects specified by text without prior training. Since the target can be changed simply by changing the text prompt, this approach is useful for mobile robots that must handle diverse objects. However, its high computational cost makes it difficult to run on every frame with the onboard computers of mobile robots. In this study, we propose a method that runs zero-shot segmentation at a low frequency and interpolates the intervening frames by mask propagation using Cutie, a video object segmentation method. Language Segment-Anything, which combines Grounding DINO and Segment Anything Model 2, is executed at fixed intervals to obtain masks. Between these executions, Cutie propagates the masks while maintaining object-level representations, and the propagated masks are corrected using new detections associated by mask overlap. This approach aims to provide masks of the specified objects at every frame while reducing the execution frequency of computationally expensive inference. In this thesis, we evaluate the effect of reduced detection frequency on segmentation accuracy and processing speed using a dataset, and verify the effectiveness of the method through navigation of an autonomous mobile robot in a real-world environment.
+
+keywords: Zero-shot Segmentation，Autonomous mobile robot 
 %
-
-
-keywords: 
