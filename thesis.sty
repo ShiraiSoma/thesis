@@ -1,52 +1,58 @@
 %------------目次深さ-----------
-\setcounter{tocdepth}{2}
+\setcounter{tocdepth}{2} % 目次に載せる見出しの深さ（0=chapter, 1=section, 2=subsection）．subsection（1.1.1）まで載る
 
 %------------名称変更------------
-\renewcommand{\figurename}{Fig.~}
-\renewcommand{\tablename}{Table~}
-\renewcommand{\bibname}{参考文献}
+\renewcommand{\figurename}{Fig.~} % 図のキャプションの頭の文字（「図 1.1」→「Fig. 1.1」）．~ は改行しないスペース
+\renewcommand{\tablename}{Table~} % 表のキャプションの頭の文字（「表 1.1」→「Table 1.1」）
+\renewcommand{\bibname}{参考文献} % 参考文献の章のタイトル（jsbook でも初期値は「参考文献」なので念のための指定）
 
-\newcommand{\figref}[1]{\figurename\ref{#1}}
-\newcommand{\tabref}[1]{\tablename\ref{#1}}
-\newcommand{\eqnref}[1]{Eq.~(\ref{#1})}
+%------------参照用コマンド------------
+\newcommand{\figref}[1]{\figurename\ref{#1}} % \figref{ラベル} →「Fig. 1.1」
+\newcommand{\tabref}[1]{\tablename\ref{#1}} % \tabref{ラベル} →「Table 1.1」
+\newcommand{\eqnref}[1]{Eq.~(\ref{#1})} % \eqnref{ラベル} →「Eq. (1.1)」
 
-\newcommand{\chapref}[1]{第\ref{#1}章}
-\newcommand{\secref}[1]{\ref{#1}節}
-% \newcommand{\subref}[1]{\ref{#1}}
+\newcommand{\chapref}[1]{第\ref{#1}章} % \chapref{ラベル} →「第1章」
+\newcommand{\secref}[1]{\ref{#1}節} % \secref{ラベル} →「1.1節」
+% \newcommand{\subref}[1]{\ref{#1}} % （未使用．subcaption パッケージの \subref と名前がぶつかるため無効にしてあると思われる）
 
-\def\thesis#1{
-	\gdef\@thesis{#1}
-}
-\def\teacher#1{
-	\gdef\@teacher{#1}
-}
-\def\organization#1{
-	\gdef\@organization{#1}
-}
+%------------表紙用の項目------------
+% （\title，\author，\date は jsbook に最初からあるので，ここでは作っていない）
+\def\thesis#1{ % thesis.tex の \thesis{...} の中身を
+	\gdef\@thesis{#1} % \@thesis として覚えておく（表紙で使う）
+} %
+\def\teacher#1{ % thesis.tex の \teacher{...} の中身を
+	\gdef\@teacher{#1} % \@teacher として覚えておく
+} %
+\def\organization#1{ % thesis.tex の \organization{...} の中身を
+	\gdef\@organization{#1} % \@organization として覚えておく
+} %
 
-\renewcommand{\maketitle}{%
-	\thispagestyle{empty}
-	\begin{center}
-	  \vspace*{2cm}
-	  \LARGE \@thesis \hspace*{\fill}\\
-	  \vspace{2cm}
-	  \LARGE
-	  {\bf \@title} \hspace*{\fill}\\
-	  \label{front_title}
-	  \Large
-	  \vspace{5cm}
-	  \@date \hspace*{0.5zw}提出 \hspace*{\fill}\\
-	  \vspace{1cm}
-	  指導教員 \hspace*{0.5zw}\@teacher \hspace*{\fill}\\
-	  \vspace{1cm}
-	  \Large
-	  \@organization \hspace*{\fill}\\
-	  \LARGE
-	  \@author \hspace*{\fill}\\
-	  \normalsize
-	\end{center}
-	\clearpage
-	\mbox{}
-	\thispagestyle{empty}
-	\clearpage
-}
+%------------表紙のレイアウト------------
+% 文字サイズ：\normalsize < \large < \Large < \LARGE < \huge < \Huge
+% 各行末の \hspace*{\fill} は右側に空白を足すもので，そのせいで各行は中央より少し左に寄る
+\renewcommand{\maketitle}{% frontmatter/main.tex の \maketitle で表紙を作るときの中身
+	\thispagestyle{empty} % 表紙にはページ番号を付けない
+	\begin{center} % ここから中央ぞろえ
+	  \vspace*{2cm} % ページ上端からの余白
+	  \LARGE \@thesis \hspace*{\fill}\\ % 「卒 業 論 文」（\thesis{...} の中身）
+	  \vspace{2cm} % 「卒業論文」とタイトルの間の空白
+	  \LARGE % 文字サイズを \LARGE に
+	  {\bf \@title} \hspace*{\fill}\\ % タイトル（\title{...} の中身）を太字で
+	  \label{front_title} % タイトルに参照用のラベルを付ける（本文から使うことはほぼない）
+	  \Large % ここから文字サイズを \Large に
+	  \vspace{2cm} % タイトルと日付の間の空白（元は 5cm．名前が次ページに押し出されたので 3cm に縮めた）
+	  \@date \hspace*{0.5zw}提出 \hspace*{\fill}\\ % 「2026年10月8日 提出」（\date{...} の中身．0.5zw は半角分の空白）
+	  \vspace{1cm} % 日付と指導教員の間の空白
+	  指導教員 \hspace*{0.5zw}\@teacher \hspace*{\fill}\\ % 「指導教員 林原 靖男 教授」（\teacher{...} の中身）
+	  \vspace{1cm} % 指導教員と所属の間の空白
+	  \Large % 文字サイズを \Large に
+	  \@organization \hspace*{\fill}\\ % 所属（\organization{...} の中身）
+	  \LARGE % 文字サイズを一回り大きい \LARGE に
+	  \@author \hspace*{\fill}\\ % 学籍番号と名前（\author{...} の中身）
+	  \normalsize % 文字サイズを元に戻す
+	\end{center} % 中央ぞろえここまで
+	\clearpage % 表紙のページを終える
+	\mbox{} % 表紙の裏の白紙ページ（\mbox{} は空の中身．何もないとページが作られないため）
+	\thispagestyle{empty} % 白紙ページにもページ番号を付けない
+	\clearpage % 白紙ページを終える
+} % \maketitle の定義ここまで
